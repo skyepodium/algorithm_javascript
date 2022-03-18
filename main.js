@@ -1,3 +1,3 @@
 function solution(s) {
-    return s.length % 2 === 1 ? s.substring(s.length / 2, s.length / 2 + 1) :  s.substring(s.length / 2 - 1, s.length / 2 + 1);
+    return (s.length === 4 || s.length === 6) && s.split(/[0-9]/).filter(x => x !== '').join("") === ""
 }
