@@ -1,15 +1,3 @@
-function solution(d, budget) {
-    // 1. init
-    let res = 0
-
-    // 2. loop
-    d.sort((a, b) => a-b)
-        .forEach(x => {
-        if(budget >= x) {
-            budget -= x
-            res++
-        }
-    })
-
-    return res
+function solution(s) {
+    return s.length % 2 === 1 ? s.substring(s.length / 2, s.length / 2 + 1) :  s.substring(s.length / 2 - 1, s.length / 2 + 1);
 }
