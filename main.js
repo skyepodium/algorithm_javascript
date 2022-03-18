@@ -1,5 +1,5 @@
-const a = [1, 2, 3]
+function solution(n, m) {
+    const gcd = (a, b) => b === 0 ? a : gcd(b, a % b)
 
-const s = new Set(a)
-
-console.log(s.has(4))
+    return [gcd(n, m), n*m/gcd(n, m)]
+}
