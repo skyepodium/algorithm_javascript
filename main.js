@@ -1,39 +1,31 @@
-const targetIndices = function(nums, target) {
+const replaceDigits = (s) => {
     // 1. init
-    nums.sort((a, b) => a - b)
-    const n = nums.length
-    const base = Array.from(Array(n).keys())
-    let res = []
+    const characters = s.split(/[0-9]+/).filter(x => x !== '')
+    const nums = s.split(/[a-z]+/).filter(x => x !== '')
+    const diff = Math.abs(characters.length - nums.length)
+    const minLength = Math.min(characters.length, nums.length)
+    const base = []
+    let res = ""
 
-    // 2. lowerBound
-    const lowerBound = (target) => {
-        let l = 0
-        let r = n
+    for(let i=0; i<minLength; i++) {
+        const c = characters[i]
+        const n = nums[i]
 
-        while(l<r) {
-            const mid = l + Math.floor((r-l) / 2)
-            if(nums[mid] < target) l = mid + 1
-            else r = mid
-        }
-        return r
+        const nOrder = (c.charCodeAt(0) - 'a'.charCodeAt(0) + Number(n)) % 26 + 'a'.charCodeAt(0)
+        base.push(String.fromCharCode(nOrder))
     }
 
-    // 3. upperbound
-    const upperBound = (target) => {
-        let l = 0
-        let r = n
-
-        while(l<r) {
-            const mid = l + Math.floor((r-l) / 2)
-            if(nums[mid] <= target) l = mid + 1
-            else r = mid
-        }
-        return r
+    for(let i=0; i<base.length; i++) {
+        res += `${characters[i]}${base[i]}`
     }
 
-    const l = lowerBound(target)
-    const r = upperBound(target) - 1
-    if(l <= r) res = base.slice(l, r+1)
+    res += characters.slice(characters.length - diff, characters.length).join("")
 
     return res
 };
+
+// const s = "a1c1e1"
+const s = "a1b2c3d4e"
+const res = replaceDigits(s)
+
+console.log('res', res)
