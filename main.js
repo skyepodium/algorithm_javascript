@@ -1,23 +1,27 @@
-const areAlmostEqual = (s1, s2) => {
-    // 1. init
-    if(s1 === s2) return true
+const search = (nums, target) => {
 
-    const n = s1.length
-    const base = []
-    let cnt = 0
+    const binarySearch = (nums, target) => {
+        let s = 0
+        let e = nums.length - 1
 
-    // 2. loop
-    for(let i=0; i<n; i++) {
-        const c1 = s1[i]
-        const c2 = s2[i]
+        while(s <= e) {
+            const mid = s + Math.floor((e - s) / 2)
+            const cur = nums[mid]
 
-        if(c1 !== c2) {
-            cnt++
-            base.push([c1, c2])
+            if(cur < target)  s = mid + 1
+            else if(cur === target) return mid
+            else e = mid - 1
         }
 
-        if(cnt >= 3) return false
+        return -1
     }
 
-    return base.length === 2 && base[0][0] === base[1][1] && base[0][1] === base[1][0]
+    return binarySearch(nums, target)
 };
+
+const nums = [-1,0,3,5,9,12]
+const target = 9
+
+const res = search(nums, target)
+
+console.log('res', res)
