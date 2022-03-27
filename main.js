@@ -1,33 +1,22 @@
-const numRescueBoats = (people, limit) => {
-    // 1. init
-    people.sort((a, b) => b-a)
-    let res = 0
-    let s = 0
-    let e = people.length - 1
-
-    // 2. loop
-    while(s <= e) {
-        const first = people[s]
-        if(s < e) {
-            const last = people[e]
-            if(first + last <= limit) e--
-        }
-        res++
-        s++
-    }
-
-    return res
+const kWeakestRows = (mat, k) => {
+    return mat.flatMap(x => {
+        return x.reduce((prev, cur) => prev + cur)
+    })
+        .map((idx, val) => [val, idx])
+        .sort((a, b) => a[1] - b[1])
+        .map(x => x[0])
+        .slice(0, k)
 };
 
-people = [1, 2]
-limit = 3
-people = [3,2,2,1]
-limit = 3
-people = [3,5,3,4]
-limit = 5
-people = [5, 1, 4, 2]
-limit = 6
+const mat =
+    [[1,1,0,0,0],
+        [1,1,1,1,0],
+        [1,0,0,0,0],
+        [1,1,0,0,0],
+        [1,1,1,1,1]]
 
-const res = numRescueBoats(people, limit)
+const k = 3
+
+const res = kWeakestRows(mat, k)
 
 console.log('res', res)
