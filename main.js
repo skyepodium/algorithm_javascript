@@ -1,22 +1,17 @@
-const kWeakestRows = (mat, k) => {
-    return mat.flatMap(x => {
-        return x.reduce((prev, cur) => prev + cur)
-    })
-        .map((idx, val) => [val, idx])
-        .sort((a, b) => a[1] - b[1])
-        .map(x => x[0])
-        .slice(0, k)
+const countBits = (n) => {
+    return Array.from(new Array(n+1).keys())
+        .map(x => {
+            let res = 0
+            while(x > 0) {
+                if(x%2 === 1) res++
+                x = ~~(x/2)
+            }
+            return res
+        })
 };
 
-const mat =
-    [[1,1,0,0,0],
-        [1,1,1,1,0],
-        [1,0,0,0,0],
-        [1,1,0,0,0],
-        [1,1,1,1,1]]
-
-const k = 3
-
-const res = kWeakestRows(mat, k)
+n = 2
+n = 5
+const res = countBits(n)
 
 console.log('res', res)
