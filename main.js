@@ -1,25 +1,26 @@
-const frequencySort = (nums) => {
+const minimumTotal = (triangle) => {
     // 1. init
-    const m = new Map
-    const res = []
+    const n = triangle.length
+    const MAX_VAL = 2000001
+    const d = Array.from(Array(n), () => new Array(n).fill(MAX_VAL))
+    d[0][0] = triangle[0][0]
 
-    // 2. counter
-    nums.forEach(x => {
-        if(m.has(x)) m.set(x, m.get(x) + 1)
-        else m.set(x, 1)
-    })
+    // 2. loop
+    for(let i=1; i<n; i++) {
+        for(let j=0; j<n; j++) {
+            const t = triangle[i][j]
 
-    const sortedArr = [...m.entries()]
-                .sort((a, b) => a[1] === b[1] ? b[0] - a[0] : a[1] - b[1])
+            if(j === 0 ) d[i][j] = d[i-1][j] + t
+            else if(j === i) d[i][j] = d[i-1][j-1] + t
+            else d[i][j] = Math.min(d[i-1][j-1], d[i-1][j]) + t
+        }
+    }
 
-    sortedArr.forEach(x => {
-                    const [key, val] = x
-                    for(let i=0; i<val; i++) res.push(key)
-                })
-
-    return res
+    return Math.min(...d[n-1])
 };
 
-const nums = [1,1,2,2,2,3]
-const res = frequencySort(nums)
+triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
+// triangle = [[-10]]
+const res = minimumTotal(triangle)
+
 console.log('res', res)
