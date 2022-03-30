@@ -1,10 +1,13 @@
-const findDuplicate = (nums) => {
-    const s = new Set()
+const missingNumber = (nums) => {
+    const s = new Set(nums)
 
-    for(const num of nums) {
-        if(s.has(num)) return num
-
-        s.add(num)
+    for(let i=0; i<=nums.length; i++) {
+        if(!s.has(i)) return i
     }
-    return  - 1
 };
+
+nums = [3, 0, 1]
+
+const res = missingNumber(nums)
+
+console.log('res', res)
