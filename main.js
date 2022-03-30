@@ -1,17 +1,10 @@
-const countBits = (n) => {
-    return Array.from(new Array(n+1).keys())
-        .map(x => {
-            let res = 0
-            while(x > 0) {
-                if(x%2 === 1) res++
-                x = ~~(x/2)
-            }
-            return res
-        })
+const findDuplicate = (nums) => {
+    const s = new Set()
+
+    for(const num of nums) {
+        if(s.has(num)) return num
+
+        s.add(num)
+    }
+    return  - 1
 };
-
-n = 2
-n = 5
-const res = countBits(n)
-
-console.log('res', res)
