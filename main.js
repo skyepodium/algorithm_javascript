@@ -19,22 +19,3 @@ const isSameTree = (p, q) => {
 
     return res
 };
-
-class Node {
-    constructor(val) {
-        this.val = val
-        this.left = null
-        this.right = null
-    }
-}
-
-const first = new Node(1)
-first.left = new Node(2)
-
-const second = new Node(1)
-second.left = null
-second.right = new Node(2)
-
-const res = isSameTree(first, second)
-
-console.log('res', res)
