@@ -1,15 +1,31 @@
-const buildArray = (target, n) => {
-    const res = []
-    const maxVal = Math.max(...target)
-    let idx = 0
+const reverseVowels = (s) => {
+    // 1. init
+    const vowelList = []
+    const vowelSet = new Set("aeiouAEIOU".split(""))
+    const sList = s.split("")
 
-    for(let i=1; i<=n; i++) {
-        if(i > maxVal) break
-
-        res.push("Push")
-        if(i !== target[idx]) res.push("Pop")
-        else idx++
+    // 2. make vowelList
+    for(let i=0; i<s.length; i++) {
+        const val = s[i]
+        if(vowelSet.has(val)) vowelList.push(i)
     }
 
-    return res
+    // 3. loop
+    let l = 0
+    let r = vowelList.length - 1
+    while(l < r) {
+        const lIdx = vowelList[l], rIdx = vowelList[r]
+        const temp = sList[lIdx]
+        sList[lIdx] = sList[rIdx]
+        sList[rIdx] = temp
+        l++
+        r--
+    }
+
+    return sList.join("")
 };
+
+const s = "hello"
+const res = reverseVowels(s)
+
+console.log('res', res)
