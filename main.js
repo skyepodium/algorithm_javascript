@@ -1,33 +1,15 @@
-class Node {
-    constructor(val, minVal) {
-        this.val = val
-        this.next = null
-        this.minVal = minVal
+const buildArray = (target, n) => {
+    const res = []
+    const maxVal = Math.max(...target)
+    let idx = 0
+
+    for(let i=1; i<=n; i++) {
+        if(i > maxVal) break
+
+        res.push("Push")
+        if(i !== target[idx]) res.push("Pop")
+        else idx++
     }
-}
 
-const MinStack = function() {
-    this.head = null
-};
-
-MinStack.prototype.push = function(val) {
-    const minVal = this.head ? Math.min(val, this.head.minVal) : val
-    const node = new Node(val, minVal)
-    node.next = this.head
-    this.head = node
-};
-
-
-MinStack.prototype.pop = function() {
-    this.head = this.head.next
-};
-
-
-MinStack.prototype.top = function() {
-    return this.head.val
-};
-
-
-MinStack.prototype.getMin = function() {
-    return this.head.minVal
+    return res
 };
