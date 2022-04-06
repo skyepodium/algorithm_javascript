@@ -1,19 +1,21 @@
-const freqAlphabets = (s) => {
-    const getAlphatbet = (n) => {
-        return String.fromCharCode("a".charCodeAt(0) + n - 1)
-    }
+const sumOfUnique = (nums) => {
+    const m = new Map()
 
-    for(let i=26; i>=0; i--) {
-        const pattern = i >= 10 ? `${i}#` : `${i}`
-        const regex = new RegExp(pattern, 'g')
-        s = s.replace(regex, getAlphatbet(i))
-    }
+    nums.forEach(x => {
+        if(m.has(x)) m.set(x, m.get(x) + 1)
+        else m.set(x, 1)
+    })
 
-    return s
+    return [...m.entries()].filter(x => x[1] === 1)
+                            .map(x => x[0])
+                            .reduce((prev, cur) => prev + cur, 0)
 };
 
-s = "10#11#12"
-s = "1326#"
-const res = freqAlphabets(s)
+nums = [1,2,3,2]
+const res = sumOfUnique(nums)
 
 console.log('res', res)
+
+const a = []
+
+a.reduce((prev, cur) => prev + cur, 0)
