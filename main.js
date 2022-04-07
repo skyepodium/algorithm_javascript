@@ -1,31 +1,46 @@
-const solution = (number, k) => {
+const solution = (n, computers) => {
     // 1. init
-    const s = []
-    const numList = number.split("").map(x => Number(x))
+    const check = Array.from(new Array(n)).fill(false)
+    let res = 0
 
-    // 2. loop
-    for(const num of numList) {
-        while(s.length > 0 && s[s.length - 1] < num && k > 0) {
-            s.pop()
-            k--
+    // 2. bfs
+    const bfs = (start) => {
+        const q = [start]
+        check[start] = true
+
+        while(q.length > 0) {
+            const node = q.shift()
+
+            for(let i=0; i<n; i++) {
+                if(node === i) continue
+
+                const next = computers[node][i]
+                if(next === 1 && !check[i]) {
+                    check[i] = true
+                    q.push(i)
+                }
+            }
         }
-        s.push(num)
     }
-    return s.slice(0, numList.length - k).join("")
+
+    // 3. loop
+    for(let i=0; i<n; i++) {
+        if(!check[i]) {
+            console.log()
+            console.log("i", i)
+            bfs(i)
+            res++
+        }
+    }
+
+    return res
 }
 
+n = 3
+computers = [[1, 1, 0], [1, 1, 0], [0, 0, 1]]
 
-number = "1924"
-k = 2
+n = 3
+computers = [[1, 1, 0], [1, 1, 1], [0, 1, 1]]
 
-number = "1231234"
-k = 3
-
-number = "4177252841"
-k = 4
-
-number = "21"
-k = 1
-const res = solution(number, k)
-
+const res = solution(n, computers)
 console.log('res', res)
