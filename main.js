@@ -1,20 +1,8 @@
-const countingSort = (arr) => {
-    const minVal = Math.min(...arr)
-    const maxVal = Math.max(...arr)
-    const res = []
-    const base = Array.from(Array(maxVal - minVal + 1)).fill(0)
+const minimumSum = (num) => {
+    const s = String(num).split("")
+        .map(x => Number(x))
+        .sort((a, b) => a - b)
 
-    arr.forEach(x => base[x - minVal]++)
 
-    base.forEach((b, idx) => {
-        while(b--) res.push(idx + minVal)
-    })
-
-    return res
-}
-
-arr = [5, 5, 2, 3, 4, 3, -1]
-
-arr = countingSort(arr)
-
-arr.forEach(x => console.log(x))
+    return (s[0] + s[1]) * 10 + s[2] + s[3]
+};
