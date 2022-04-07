@@ -1,17 +1,17 @@
-const divideArray = (nums) => {
-    const m = new Map()
+const lastStoneWeight = (stones) => {
+    // 1. loop
+    while(stones.length >= 2) {
+        stones.sort((a, b) => b-a)
 
-    nums.forEach(x => {
-        if(m.has(x)) m.set(x, m.get(x) + 1)
-        else m.set(x, 1)
-    })
+        const a = stones.shift()
+        const b = stones.shift()
 
-    return [...m.values()].filter(x => x % 2 !== 0).length === 0
+        stones.push(a===b ? 0 : Math.abs(a-b))
+    }
+
+    return stones[0]
 };
-
-
-nums = [3,2,3,2,2,2]
-nums = [1, 2, 3, 4]
-const res = divideArray(nums)
+stones = [2,7,4,1,8,1]
+const res = lastStoneWeight(stones)
 
 console.log('res', res)
