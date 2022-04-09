@@ -1,11 +1,21 @@
-const solution = (arr) => {
-    // 1. init
-    const s = []
+const solution = (n) => {
+    const d = Array.from(Array(n+1)).fill(1)
 
-    // 2. loop
-    arr.forEach(x => {
-        if(s.length === 0 || s[s.length - 1] !== x) s.push(x)
-    })
+    const eratos = () => {
+        for(let i=2; i*i<=n; i++) {
+            for(let j=i*2; j<=n; j+=i) {
+                if(d[j] === 1) d[j] = 0
+            }
+        }
+    }
 
-    return s
+    d[0] = 0
+    d[1] = 0
+    eratos()
+    return d.reduce((prev, cur) => prev + cur, 0)
 }
+
+n = 10
+const res = solution(n)
+
+console.log('res', res)
