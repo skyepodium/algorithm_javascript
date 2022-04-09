@@ -1,46 +1,17 @@
-const solution = (n, computers) => {
+const solution = (participant, completion) => {
     // 1. init
-    const check = Array.from(new Array(n)).fill(false)
-    let res = 0
+    const m = new Map()
 
-    // 2. bfs
-    const bfs = (start) => {
-        const q = [start]
-        check[start] = true
+    completion.forEach(x => {
+        if(m.has(x)) m.set(x, m.get(x) + 1)
+        else m.set(x, 1)
+    })
 
-        while(q.length > 0) {
-            const node = q.shift()
+    for(const p of participant) {
+        if(!m.has(p) || m.get(x) === 0) return p
 
-            for(let i=0; i<n; i++) {
-                if(node === i) continue
-
-                const next = computers[node][i]
-                if(next === 1 && !check[i]) {
-                    check[i] = true
-                    q.push(i)
-                }
-            }
-        }
+        m.set(p, m.get(p) - 1)
     }
 
-    // 3. loop
-    for(let i=0; i<n; i++) {
-        if(!check[i]) {
-            console.log()
-            console.log("i", i)
-            bfs(i)
-            res++
-        }
-    }
-
-    return res
+    return ""
 }
-
-n = 3
-computers = [[1, 1, 0], [1, 1, 0], [0, 0, 1]]
-
-n = 3
-computers = [[1, 1, 0], [1, 1, 1], [0, 1, 1]]
-
-const res = solution(n, computers)
-console.log('res', res)
