@@ -1,17 +1,11 @@
-const solution = (participant, completion) => {
+const solution = (arr) => {
     // 1. init
-    const m = new Map()
+    const s = []
 
-    completion.forEach(x => {
-        if(m.has(x)) m.set(x, m.get(x) + 1)
-        else m.set(x, 1)
+    // 2. loop
+    arr.forEach(x => {
+        if(s.length === 0 || s[s.length - 1] !== x) s.push(x)
     })
 
-    for(const p of participant) {
-        if(!m.has(p) || m.get(x) === 0) return p
-
-        m.set(p, m.get(p) - 1)
-    }
-
-    return ""
+    return s
 }
