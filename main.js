@@ -1,5 +1,4 @@
-const solution = (n) => {
-    const num = ~~Math.sqrt(n)
+const findOcurrences = (text, first, second) => {
 
-    return num * num === n ? (num + 1) * (num + 1) : -1
-}
+    return [...` ${text}`.matchAll(new RegExp(`(?= ${first} ${second} (\\w+))`, 'g'))].map(x => x[1])
+};
