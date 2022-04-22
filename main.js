@@ -1,13 +1,24 @@
-const dominantIndex = (nums) => {
-    // 1. exception
-    if(nums.length < 2) return 0
+const digitSum = (s, k) => {
+    const sumStr = s => {
+        let res = 0
 
-    // 2. sort
-    const l = nums.map((val, idx) => [val, idx])
-        .sort((a, b) => b[0] - a[0])
+        for(let i=0; i<s.length; i++) {
+            const cur = s[i]
+            res += cur.charCodeAt(0) - '0'.charCodeAt(0)
+        }
 
-    const first = l[0]
-    const second = l[1]
+        return String(res)
+    }
 
-    return first[0] >= second[0] * 2 ? first[1] : -1
+    while(s.length > k) {
+        let base = ""
+
+        for(let i=0; i<s.length; i+=k) {
+            base += sumStr(s.substring(i, i+k))
+        }
+
+        s = base
+    }
+
+    return s
 };
