@@ -1,24 +1,38 @@
-const digitSum = (s, k) => {
-    const sumStr = s => {
-        let res = 0
+const solution = (n, t, m, p) => {
 
-        for(let i=0; i<s.length; i++) {
-            const cur = s[i]
-            res += cur.charCodeAt(0) - '0'.charCodeAt(0)
+    const intToBaseStr = (num, base) => {
+        let res = ""
+
+        while(num > 0) {
+            const remain = num % base
+            if(remain >= 10) res += String.fromCharCode("A".charCodeAt(0) + (remain % 10))
+            else res += String(remain)
+            num = ~~(num / base)
         }
 
-        return String(res)
+        if(res === "") res = "0"
+
+        return res.split("").reverse().join("")
     }
 
-    while(s.length > k) {
-        let base = ""
-
-        for(let i=0; i<s.length; i+=k) {
-            base += sumStr(s.substring(i, i+k))
-        }
-
-        s = base
+    let r = ""
+    for(let i=0; i<t*m; i++) {
+        r += intToBaseStr(i, n)
     }
 
-    return s
-};
+    let res = ""
+    for(let i=p; i<=t*m; i += m) {
+        res += r[i-1]
+    }
+
+    return res
+}
+
+n = 2
+t = 4
+m = 2
+p = 1
+
+const res = solution(n, t, m, p)
+
+console.log('res', res)
