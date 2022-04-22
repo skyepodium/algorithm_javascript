@@ -1,38 +1,66 @@
-const solution = (n, t, m, p) => {
+const solution = (begin, target, words) => {
+    // 1. init
+    const d = {}
+    const check = {}
+    words.push(begin)
 
-    const intToBaseStr = (num, base) => {
-        let res = ""
-
-        while(num > 0) {
-            const remain = num % base
-            if(remain >= 10) res += String.fromCharCode("A".charCodeAt(0) + (remain % 10))
-            else res += String(remain)
-            num = ~~(num / base)
+    // 2. get diff
+    const getDiff = (a, b) => {
+        let res = 0
+        for(let i=0; i<a.length; i++) {
+            if(a[i] !== b[i]) res++
         }
-
-        if(res === "") res = "0"
-
-        return res.split("").reverse().join("")
+        return res
     }
 
-    let r = ""
-    for(let i=0; i<t*m; i++) {
-        r += intToBaseStr(i, n)
+    // 3. loop
+    for(let i=0; i<words.length; i++) {
+        for(let j=0; j<words.length; j++) {
+            if(i === j) continue
+            const a = words[i]
+            const b = words[j]
+
+            if(getDiff(a, b) === 1) {
+                if(d[a]) d[a] = [...d[a], b]
+                else d[a] = [b]
+
+                if(d[b]) d[b] = [...d[b], a]
+                else d[b] = [a]
+            }
+        }
     }
 
-    let res = ""
-    for(let i=p; i<=t*m; i += m) {
-        res += r[i-1]
+    // 4. bfs
+    const bfs = start => {
+        const q = [start]
+        check[start] = 0
+
+        while(q.length > 0) {
+            const node = q.shift()
+            if(d[node]) {
+                for(const nNode of d[node]) {
+                    if(!check[nNode]) {
+                        check[nNode] = check[node] + 1
+                        q.push(nNode)
+                    }
+                }
+            }
+        }
     }
 
-    return res
+    bfs(begin)
+
+    return check[target] ? check[target] : 0
 }
 
-n = 2
-t = 4
-m = 2
-p = 1
+begin = "hit"
+target = "cog"
+words = ["hot", "dot", "dog", "lot", "log", "cog"]
 
-const res = solution(n, t, m, p)
+begin = "hit"
+target = "cog"
+words = ["hot", "dot", "dog", "lot", "log"]
+
+const res = solution(begin, target, words)
 
 console.log('res', res)
