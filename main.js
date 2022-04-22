@@ -1,5 +1,7 @@
-const solution = (n) => {
-    const num = ~~Math.sqrt(n)
+const findFinalValue = (nums, original) => {
+    const s = new Set(nums)
 
-    return num * num === n ? (num + 1) * (num + 1) : -1
-}
+    while(s.has(original)) original *= 2
+
+    return original
+};
