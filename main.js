@@ -1,73 +1,52 @@
-const solution = (m, musicinfos) => {
+const solution = (n, k) => {
     // 1. init
-    let res = "(None)"
-    let t = -1
-    const tk_list = ['C', 'D', 'F', 'G', 'A']
+    let res = 0
 
-    // 2. rep
-    const rep = s => {
-        tk_list.forEach(x => s = s.replace(new RegExp(`${x}#`, 'g'), x.toLowerCase()))
-        return s
+    // 2. intToBase
+    const intToBase = (n, k) => {
+        let r = ""
+        while(n > 0) {
+            r += String(n % k)
+            n = ~~(n/k)
+        }
+        return r.split("").reverse().join("")
     }
 
-    m = rep(m)
+    // 3. isPrime
+    const isPrime = val => {
+        if (val < 2) return false
 
-    // 3. calDiff
-    const calDiff = (s, e) => {
-        let [sh, sm] = s.split(":").map(x => Number(x))
-        let [eh, em] = e.split(":").map(x => Number(x))
+        for(let i=2; i*i<=val; i++) if(val % i === 0) return false
 
-        let hDiff = eh - sh
-        if(em < sm) {
-            hDiff -= 1
-            em += 60
-        }
-        const mdiff = em - sm
-
-        return hDiff * 60 + mdiff
+        return true
     }
 
-    // 4. loop
-    for(const ms of musicinfos) {
-        // 1) split
-        let [s, e, name, ml] = ms.split(",")
-        ml = rep(ml)
+    const num = intToBase(n, k)
 
-        // 2) cal diff
-        const diff = calDiff(s, e)
+    // 4. check
+    // 1) not zero
+    if(num.replace(/0/g, '') === num && isPrime(Number(num))) res++
 
-        // 3) get total
-        const ml_len = ml.length
+    // 2) regex_list
+    const regex_list = [/^([1-9]+)0/g, /0([1-9]+)$/g, /(?=0([1-9]+)0)/g]
 
-        let me = ""
-        const q = ~~(diff / ml_len)
-        for(let i=0; i<q; i++) me += ml
+    for(const re of regex_list) {
+        const b = [...num.matchAll(new RegExp(re, 'g'))]
 
-        me += ml.slice(0, diff % ml_len)
-
-        const pattern = new RegExp(m)
-
-        const match = pattern.exec(me)
-        if(match && diff > t) {
-            t = diff
-            res = name
-        }
+        b.forEach(x => {
+            if(isPrime(Number(x[1]))) res++
+        })
     }
 
     return res
 }
 
-m = "ABCDEFG"
-musicinfos = ["12:00,12:14,HELLO,CDEFGAB", "13:00,13:05,WORLD,ABCDEF"]
-//HELLO
+n = 437674
+k = 3
 
-m = "CC#BCC#BCC#BCC#B"
-musicinfos = ["03:00,03:30,FOO,CC#B", "04:00,04:08,BAR,CC#BCC#BCC#B"]
-//FOO
-//
-// m = "ABC"
-// musicinfos = ["12:00,12:14,HELLO,C#DEFGAB", "13:00,13:05,WORLD,ABCDEF"]
-// //WORLD
+n = 110011
+k = 10
 
-res = solution(m, musicinfos)
+res = solution(n, k)
+
 console.log('res', res)
