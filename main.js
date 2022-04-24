@@ -1,107 +1,73 @@
-function solution(m, n, board) {
+const solution = (m, musicinfos) => {
     // 1. init
-    let res = 0
-    const temp = m
-    m = n
-    n = temp
-    board = board.map(x => x.split(""))
-    let check = null
-    const d = [[0, 0], [0, 1], [1, 0], [1, 1]]
+    let res = "(None)"
+    let t = -1
+    const tk_list = ['C', 'D', 'F', 'G', 'A']
 
-    // 2. init
-    const init = () => {
-        check = Array.from(Array(n), ()=> new Array(m).fill(false))
+    // 2. rep
+    const rep = s => {
+        tk_list.forEach(x => s = s.replace(new RegExp(`${x}#`, 'g'), x.toLowerCase()))
+        return s
     }
 
-    // 3. search
-    const search = () => {
-        let cnt = 0
+    m = rep(m)
 
-        for(let i=0; i<n-1; i++) {
-            for(let j=0; j<m-1; j++) {
-                const prev = board[i][j]
-                if(prev === "") continue
+    // 3. calDiff
+    const calDiff = (s, e) => {
+        let [sh, sm] = s.split(":").map(x => Number(x))
+        let [eh, em] = e.split(":").map(x => Number(x))
 
-                let isSame = true
-                for(const [dx, dy] of d) {
-                    const nx = i + dx
-                    const ny = j + dy
-                    const cur = board[nx][ny]
-                    if(prev !== cur) {
-                        isSame = false
-                        break
-                    }
-                }
-
-                if(!isSame) continue
-
-                for(const [dx, dy] of d) {
-                    const nx = i + dx
-                    const ny = j + dy
-                    if(check[nx][ny]) continue
-                    check[nx][ny] = true
-                    cnt++
-                }
-            }
+        let hDiff = eh - sh
+        if(em < sm) {
+            hDiff -= 1
+            em += 60
         }
+        const mdiff = em - sm
 
-
-
-        return cnt
+        return hDiff * 60 + mdiff
     }
 
-    // 4. move
-    const move = () => {
-        for(let j=0; j<m; j++) {
-            for(let idx=n-1; idx>=0; idx--) {
-                let i = idx
-                if(board[i][j] === "" || check[i][j]) continue
+    // 4. loop
+    for(const ms of musicinfos) {
+        // 1) split
+        let [s, e, name, ml] = ms.split(",")
+        ml = rep(ml)
 
-                while(i < n-1 && board[i][j] !== "" && board[i+1][j] === "") {
-                    board[i+1][j] = board[i][j]
-                    board[i][j] = ""
-                    i++
-                }
-            }
+        // 2) cal diff
+        const diff = calDiff(s, e)
+
+        // 3) get total
+        const ml_len = ml.length
+
+        let me = ""
+        const q = ~~(diff / ml_len)
+        for(let i=0; i<q; i++) me += ml
+
+        me += ml.slice(0, diff % ml_len)
+
+        const pattern = new RegExp(m)
+
+        const match = pattern.exec(me)
+        if(match && diff > t) {
+            t = diff
+            res = name
         }
-
-    }
-
-    // 5. clear
-    const clear = () => {
-        for(let i=0; i<n; i++)
-            for(let j=0; j<m; j++)
-                if(check[i][j]) board[i][j] = ""
-    }
-
-    // 6. loop
-    while(true) {
-        // 1) init
-        init()
-
-        // 2) search
-        const searchCnt = search()
-        if(searchCnt === 0) break
-        res += searchCnt
-
-        // 3) clear
-        clear()
-
-        // 4) move
-        move()
     }
 
     return res
 }
 
-m = 4
-n = 5
-board = ["CCBDE", "AAADE", "AAABF", "CCBBF"]
+m = "ABCDEFG"
+musicinfos = ["12:00,12:14,HELLO,CDEFGAB", "13:00,13:05,WORLD,ABCDEF"]
+//HELLO
 
-// m = 6
-// n = 6
-// board = ["TTTANT", "RRFACC", "RRRFCC", "TRRRAA", "TTMMMF", "TMMTTJ"]
+m = "CC#BCC#BCC#BCC#B"
+musicinfos = ["03:00,03:30,FOO,CC#B", "04:00,04:08,BAR,CC#BCC#BCC#B"]
+//FOO
+//
+// m = "ABC"
+// musicinfos = ["12:00,12:14,HELLO,C#DEFGAB", "13:00,13:05,WORLD,ABCDEF"]
+// //WORLD
 
-const res = solution(m, n, board)
-
+res = solution(m, musicinfos)
 console.log('res', res)
