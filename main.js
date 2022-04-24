@@ -1,52 +1,70 @@
-const solution = (n, k) => {
+const solution = (relation) => {
     // 1. init
     let res = 0
+    const n = relation.length
+    const m = relation[0].length
+    const idxSet = new Set()
+    const lList = []
 
-    // 2. intToBase
-    const intToBase = (n, k) => {
-        let r = ""
-        while(n > 0) {
-            r += String(n % k)
-            n = ~~(n/k)
+    // 2. go
+    const go = (idx, l) => {
+        if(idx >= m) {
+            if(l.length > 0) lList.push([...l])
+            return
         }
-        return r.split("").reverse().join("")
+
+        l.push(idx)
+        go(idx + 1, l)
+        l.pop()
+
+        go(idx + 1, l)
     }
 
-    // 3. isPrime
-    const isPrime = val => {
-        if (val < 2) return false
+    go(0, [])
 
-        for(let i=2; i*i<=val; i++) if(val % i === 0) return false
+    // 3. sort
+    lList.sort((a, b) => a.length - b.length)
 
-        return true
-    }
+    for(const l of lList) {
+        const cSet = new Set(l.map(x => String(x)))
 
-    const num = intToBase(n, k)
+        let isPossible = true
+        for(const idx of idxSet.values()) {
+            let cnt = 0
 
-    // 4. check
-    // 1) not zero
-    if(num.replace(/0/g, '') === num && isPrime(Number(num))) res++
+            for(const x of idx.split("")) {
+                if(cSet.has(x)) cnt++
+            }
 
-    // 2) regex_list
-    const regex_list = [/^([1-9]+)0/g, /0([1-9]+)$/g, /(?=0([1-9]+)0)/g]
+            if(cnt === idx.length) {
+                isPossible = false
+                break
+            }
+        }
 
-    for(const re of regex_list) {
-        const b = [...num.matchAll(new RegExp(re, 'g'))]
+        if(!isPossible) continue
 
-        b.forEach(x => {
-            if(isPrime(Number(x[1]))) res++
-        })
+        // 2) make key
+        const keyList = []
+        for(const c of relation) {
+            const key = l.map(x => String(c[x])).join("_")
+            keyList.push(key)
+        }
+
+        // 3) uniqueness
+        const s = new Set(keyList)
+        if(s.size < n) continue
+
+        // 4) add key
+        idxSet.add(l.map(x => String(x)).join(""))
+        res++
     }
 
     return res
 }
 
-n = 437674
-k = 3
+relation = [["100","ryan","music","2"],["200","apeach","math","2"],["300","tube","computer","3"],["400","con","computer","4"],["500","muzi","music","3"],["600","apeach","music","2"]]
 
-n = 110011
-k = 10
-
-res = solution(n, k)
+res = solution(relation)
 
 console.log('res', res)
