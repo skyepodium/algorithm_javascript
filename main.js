@@ -1,32 +1,42 @@
-const solution = gems => {
+const minCostConnectPoints = (points) => {
     // 1. init
-    const totalCnt = new Set(gems).size
-    const n = gems.length
-    let startIdx = 0
-    let endIdx = n-1
-    const c = new Map()
+    const n = points.length
+    const e = []
+    let res = 0
+    const d = Array.from(Array(n).keys())
 
-    // 2. two pointer
-    let s = 0
-    for(let e=0; e<n; e++) {
-        // 1) cur
-        const cur = gems[e]
-        if(c.has(cur)) c.set(cur, c.get(cur) + 1)
-        else c.set(cur, 1)
+    // 2. calDist
+    const calDist = (x, y, a, b) => {
+        return Math.abs(x - a) + Math.abs(y-b)
+    }
 
-        // 2) minify
-        while(c.size >= totalCnt) {
-            if(endIdx - startIdx > e - s) {
-                startIdx = s
-                endIdx = e
-            }
-
-            const startVal = gems[s]
-            c.set(startVal, c.get(startVal) - 1)
-            if(c.get(startVal) === 0) c.delete(startVal)
-            s++
+    // 3. make graph
+    for(let i=0; i<n; i++) {
+        for(let j=i+1; j<n; j++) {
+            const [x, y] = points[i]
+            const [a, b] = points[j]
+            e.push([i, j, calDist(x, y, a, b)])
         }
     }
 
-    return [startIdx + 1, endIdx + 1]
-}
+    // 4. sort
+    e.sort((a, b) => a[2] - b[2])
+
+    // 5. find
+    const find = node => {
+        if(node === d[node]) return node
+        else return d[node] = find(d[node])
+    }
+
+    // 6. cost
+    for(let [a, b, cost] of e) {
+        a = find(a)
+        b = find(b)
+        if(a !== b) {
+            d[a] = b
+            res += cost
+        }
+    }
+
+    return res
+};
