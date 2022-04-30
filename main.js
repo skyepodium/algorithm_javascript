@@ -33,7 +33,7 @@ const permuteUnique = (nums) => {
 };
 
 nums = [1, 1, 2]
-nums = [1,2,3]
+// nums = [1,2,3]
 res = permuteUnique(nums)
 
 console.log('res', res)
