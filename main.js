@@ -1,19 +1,14 @@
-const backspaceCompare = (s, t) => {
+const hammingDistance = (x, y) => {
 
-    const refine = (s) => {
-        const st = []
-
-        s.split("").forEach(x => {
-            if(x !== '#') {
-                st.push(x)
-            }
-            else {
-                if(st.length > 0) st.pop()
-            }
-        })
-
-        return st.join("")
-    }
-
-    return refine(s) === refine(t)
+    return (x^y).toString(2)
+                .split("")
+                .filter(x => x === "1").length
 };
+
+x = 1
+y = 4
+x = 3
+y = 1
+const res = hammingDistance(x, y)
+
+console.log('res', res)
