@@ -1,14 +1,5 @@
-const hammingDistance = (x, y) => {
+const isPalindrome = (x) => {
+    const s = String(x)
 
-    return (x^y).toString(2)
-                .split("")
-                .filter(x => x === "1").length
+    return s === s.split("").reverse().join("")
 };
-
-x = 1
-y = 4
-x = 3
-y = 1
-const res = hammingDistance(x, y)
-
-console.log('res', res)
