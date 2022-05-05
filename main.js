@@ -1,22 +1,25 @@
-const checkStraightLine = (coordinates) => {
-    // 1. init
-    const n = coordinates.length
 
-    // 2. ccw
-    const ccw = (p, q, r) => {
-        const first = (p[0] - r[0]) * (q[1] - r[1])
-        const second = (p[1] - r[1]) * (q[0] - r[0])
-        const result = first - second
+const MyStack = function() {
+    this.q = []
+}
 
-        if(result > 0) return 1
-        else if(result === 0) return 0
-        else return -1
+
+MyStack.prototype.push = function(x) {
+    this.q.push(x)
+    const n = this.q.length
+    for(let i=0; i<n-1; i++) {
+        this.q.push(this.q.shift())
     }
+}
 
-    // 3. loop
-    for(let i=0; i<n-2; i++) {
-        if(ccw(coordinates[i], coordinates[i+1], coordinates[i+2]) !== 0) return false
-    }
+MyStack.prototype.pop = function() {
+    return this.q.shift()
+}
 
-    return true
-};
+MyStack.prototype.top = function() {
+    return this.q[0]
+}
+
+MyStack.prototype.empty = function() {
+    return this.q.length === 0
+}
