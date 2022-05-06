@@ -1,23 +1,12 @@
-class MyStack {
-    constructor() {
-        this.q = []
-    }
+const removeDuplicates = (s) => {
+    // 1. init
+    const st = []
 
-    push(x) {
-        this.q.push(x)
-        const n = this.q.length
-        for(let i=0; i<n-1; i++) this.q.push(this.q.shift())
-    }
+    // 2. loop
+    s.split("").forEach(c => {
+        if(st && st[st.length - 1] === c) while(st && st[st.length - 1] === c) st.pop()
+        else st.push(c)
+    })
 
-    pop() {
-        return this.q.shift()
-    }
-
-    top() {
-        return this.q[0]
-    }
-
-    empty() {
-        return this.q.length === 0
-    }
-}
+    return st.join("")
+};
