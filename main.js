@@ -1,12 +1,23 @@
-const removeDuplicates = (s) => {
+const maxOperations = (nums, k) => {
     // 1. init
-    const st = []
-
-    // 2. loop
-    s.split("").forEach(c => {
-        if(st && st[st.length - 1] === c) while(st && st[st.length - 1] === c) st.pop()
-        else st.push(c)
+    let res = 0
+    const m = new Map()
+    nums.forEach(num => {
+        m.has(num) ? m.set(num, m.get(num) + 1) : m.set(num, 1)
     })
 
-    return st.join("")
+    // 2. loop
+    for(const num of nums) {
+        const remain = k - num
+
+        if(!m.has(remain)) continue
+        if(num === remain && m.get(remain) <= 1) continue
+        if(m.get(remain) < 1 || m.get(num) < 1) continue
+
+        res++
+        m.set(remain, m.get(remain) - 1)
+        m.set(num, m.get(num) - 1)
+    }
+
+    return res
 };
