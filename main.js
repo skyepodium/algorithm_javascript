@@ -1,22 +1,19 @@
-const construct2DArray = (original, m, n) => {
-    // 0. exception
-    if(original.length !== m * n) return []
-
+const smallerNumbersThanCurrent = (nums) => {
     // 1. init
-    const res = []
+    const maxInt = 101
+    const c = Array.from(new Array(maxInt).fill(0))
+    const d = Array.from(new Array(maxInt).fill(0))
 
     // 2. loop
-    let cnt = 0
-    let t = []
-    original.forEach(o => {
-        t.push(o)
-        cnt++
-        if(cnt >= n) {
-            cnt = 0
-            res.push([...t])
-            t = []
-        }
-    })
+    nums.forEach(num => c[num]++)
 
-    return res
+    let prev = 0
+    for(let i=0; i<maxInt; i++) {
+        if(c[i] === 0) continue
+
+        d[i] = prev
+        prev += c[i]
+    }
+
+    return nums.map(num => d[num])
 };
