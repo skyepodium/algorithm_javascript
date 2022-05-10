@@ -1,23 +1,40 @@
-const maxOperations = (nums, k) => {
+const combinationSum3 = (k, n) => {
     // 1. init
-    let res = 0
-    const m = new Map()
-    nums.forEach(num => {
-        m.has(num) ? m.set(num, m.get(num) + 1) : m.set(num, 1)
-    })
+    const res = []
+    const check = Array.from(new Array(10).fill(false))
 
-    // 2. loop
-    for(const num of nums) {
-        const remain = k - num
+    // 2. recursive
+    const go = (cnt, l, sumVal) => {
+        if(sumVal > n) return
 
-        if(!m.has(remain)) continue
-        if(num === remain && m.get(remain) <= 1) continue
-        if(m.get(remain) < 1 || m.get(num) < 1) continue
+        if(cnt >= k) {
+            if(sumVal === n) {
+                res.push([...l])
+            }
+            return
+        }
 
-        res++
-        m.set(remain, m.get(remain) - 1)
-        m.set(num, m.get(num) - 1)
+        for(let i=1; i<10; i++) {
+            if(!check[i]) {
+                if(l.length > 0 && l[l.length - 1] > i) continue
+
+                check[i] = true
+                l.push(i)
+                go(cnt + 1, l, sumVal + i)
+                check[i] = false
+                l.pop()
+            }
+        }
     }
+
+    go(0, [], 0)
 
     return res
 };
+
+k = 3
+n = 7
+
+const res = combinationSum3(k, n)
+
+console.log('res', res)
