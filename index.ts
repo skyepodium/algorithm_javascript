@@ -1,49 +1,15 @@
-const networkDelayTime = (times: number[][], n: number, k: number): number => {
+const maxNumberOfBalloons = (text:string):number => {
     // 1. init
-    const maxVal:number = 10001
-    let res:number = 0
-    const d:number[] = Array.from(new Array(n + 1).fill(maxVal))
-    const v:[number, number][][] = Array.from(Array(n + 1), () => [])
+    const m = new Map<string, number>()
 
-    // 2. make graph
-    times.forEach(([s, e, c]) => v[s].push([c, e]))
+    // 2. count
+    text.split("").forEach(c => {
+        const cnt:number = m.has(c) ? m.get(c) + 1 : 1
+        m.set(c, cnt)
+    })
 
-    // 3. dijkstra
-    const dijkstra = (startNode) => {
-        const q:[number, number][] = []
-        d[startNode] = 0
-        q.push([startNode, d[startNode]])
+    // 3. res
+    const res:number = Math.min(m.get('b'), m.get('a'), Math.trunc(m.get('l')/2), Math.trunc(m.get('o')/2), m.get('n'))
 
-        while(q.length > 0) {
-            const [node, cost] = q.shift()
-
-            if(d[node] < cost) continue
-
-            for(const [nCost, nNode] of v[node]) {
-                if(d[nNode] > d[node] + nCost) {
-                    d[nNode] = d[node] + nCost
-                    q.push([nNode, d[nNode]])
-                }
-            }
-        }
-    }
-
-    dijkstra(k)
-
-    // 4. check
-    res = Math.max(...d.slice(1, d.length))
-
-    return res === maxVal ? - 1 : res
+    return isNaN(res) ? 0 : res
 };
-//
-// times:[] = [[2,1,1],[2,3,1],[3,4,1]]
-// n = 4
-// k = 2
-
-// times = [[1,2,1],[2,1,3]]
-// n = 2
-// k = 2
-
-// const res = networkDelayTime(times, n, k)
-//
-// console.log('res', res)
