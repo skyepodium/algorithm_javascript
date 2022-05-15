@@ -1,25 +1,24 @@
-const makeFancyString = (s) => {
+const deepestLeavesSum = (root) => {
     // 1. init
-    const st = []
+    let d = 0
+    let res = 0
 
-    // 2. loop
-    for(const c of s.split("")) {
-        const [a, b] = st.length > 0 ? st[st.length - 1] : ['', 0]
+    // 2. dfs
+    const dfs = (node, depth) => {
+        if(!node) return
 
-        if(a === c && b === 2) continue
+        if(depth === d) res += node.val
 
-        const cnt = a === c ? b + 1 : 1
+        if(depth > d) {
+            res = node.val
+            d = depth
+        }
 
-        st.push([c, cnt])
+        dfs(node.left, depth + 1)
+        dfs(node.right, depth + 1)
     }
 
-    return st.map(x => x[0]).join("")
+    dfs(root, 0)
+
+    return res
 };
-
-s = "leeetcode"
-s = "aaabaaaa"
-s = "aab"
-
-const res = makeFancyString(s)
-
-console.log('res', res)

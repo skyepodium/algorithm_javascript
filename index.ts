@@ -1,17 +1,24 @@
-const makeFancyString = (s:string):string => {
+const deepestLeavesSum = (root: TreeNode | null): number => {
     // 1. init
-    const st:[string, number][] = []
+    let d: number = 0
+    let res: number = 0
 
-    // 2. loop
-    for(const c of s.split("")) {
-        const [a, b]:[string, number] = st.length > 0 ? st[st.length - 1] : ['', 0]
+    // 2. dfs
+    const dfs = (node: TreeNode, depth: number) => {
+        if(!node) return
 
-        if(a === c && b === 2) continue
+        if(depth === d) res += node.val
 
-        const cnt:number = a === c ? b + 1 : 1
+        if(depth > d) {
+            res = node.val
+            d = depth
+        }
 
-        st.push([c, cnt])
+        dfs(node.left, depth + 1)
+        dfs(node.right, depth + 1)
     }
 
-    return st.map(x => x[0]).join("")
+    dfs(root, 0)
+
+    return res
 };
