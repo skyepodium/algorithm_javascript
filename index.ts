@@ -1,3 +1,3 @@
-const buildArray = (nums: number[]): number[] => {
-    return nums.map((val, idx) => nums[nums[idx]])
+const containsDuplicate = (nums: number[]): boolean => {
+    return new Set(nums).size !== nums.length
 };

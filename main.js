@@ -1,10 +1,9 @@
-const buildArray = (nums) => {
-    return nums.map((val, idx) => nums[nums[idx]])
+const containsDuplicate = (nums) => {
+    return new Set(nums).size !== nums.length
 };
 
-nums = [0,2,1,5,3,4]
-nums = [5,0,1,2,3,4]
+nums = [1,2,3,1]
 
-const res = buildArray(nums)
+const res = containsDuplicate(nums)
 
 console.log('res', res)
