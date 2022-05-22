@@ -1,16 +1,22 @@
-const coinChange = (coins: number[], amount: number): number => {
+const countSubstrings = (s: string): number => {
     // 1. init
-    const d:number[] = Array.from(new Array(amount+1).fill(amount+1))
-    d[0] = 0
+    const n:number = s.length
+    let res:number = 0
 
-    // 2. bottom up
-    for(let i=1; i<=amount; i++) {
-        for(const c of coins) {
-            if(i-c < 0) continue
-
-            d[i] = Math.min(d[i], d[i-c] + 1)
+    // 2. isPalindrome
+    const isPalindrome = (l:number, r:number) => {
+        while(l >= 0 && r < n && s[l] === s[r]) {
+            res++
+            l--
+            r++
         }
     }
 
-    return d[amount] <= amount ? d[amount] : -1
+    // 3. loop
+    for(let i=0; i<n; i++) {
+        isPalindrome(i, i)
+        isPalindrome(i, i+1)
+    }
+
+    return res
 };
