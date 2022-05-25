@@ -1,22 +1,23 @@
-const countSubstrings = (s) => {
+const validPath = (n, edges, source, destination) => {
     // 1. init
-    const n = s.length
-    let res = 0
+    const check = Array.from(new Array(n).fill(false))
+    const v = Array.from(new Array(n), () => [])
 
-    // 2. isPalindrome
-    const isPalindrome = (l, r) => {
-        while(l >= 0 && r < n && s[l] === s[r]) {
-            res++
-            l--
-            r++
-        }
+    // 2. make graph
+    edges.forEach(([s, e]) => {
+        v[s].push(e)
+        v[e].push(s)
+    })
+
+    // 3. DFS
+    const dfs = (node) => {
+        check[node] = true
+        v[node].forEach(nNode => {
+            if(check[nNode]) dfs(nNode)
+        })
     }
 
-    // 3. loop
-    for(let i=0; i<n; i++) {
-        isPalindrome(i, i)
-        isPalindrome(i, i+1)
-    }
+    dfs(source)
 
-    return res
+    return check[destination]
 };
