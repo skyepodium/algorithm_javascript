@@ -13,7 +13,7 @@ const validPath = (n, edges, source, destination) => {
     const dfs = (node) => {
         check[node] = true
         v[node].forEach(nNode => {
-            if(check[nNode]) dfs(nNode)
+            if(!check[nNode]) dfs(nNode)
         })
     }
 
