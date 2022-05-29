@@ -1,23 +1,32 @@
-const validPath = (n, edges, source, destination) => {
+const maxProduct = (words) => {
     // 1. init
-    const check = Array.from(new Array(n).fill(false))
-    const v = Array.from(new Array(n), () => [])
-
-    // 2. make graph
-    edges.forEach(([s, e]) => {
-        v[s].push(e)
-        v[e].push(s)
-    })
-
-    // 3. DFS
-    const dfs = (node) => {
-        check[node] = true
-        v[node].forEach(nNode => {
-            if(!check[nNode]) dfs(nNode)
+    const n = words.length
+    const w = words.map(x => {
+        let bit = 0
+        x.split("").forEach(a => {
+            const val = a.charCodeAt(0) - 'a'.charCodeAt(0)
+            bit |= 1 << val
         })
+        return bit
+    })
+    let res = 0
+
+    // 2. loop
+    for(let i=0; i<n; i++) {
+        for(let j=i+1; j<n; j++) {
+            const a = w[i]
+            const b = w[j]
+            if((a & b) !== 0) continue
+
+            res = Math.max(res, words[i].length * words[j].length)
+        }
     }
 
-    dfs(source)
-
-    return check[destination]
+    return res
 };
+
+words = ["abcw","baz","foo","bar","xtfn","abcdef"]
+
+const res = maxProduct(words)
+
+console.log('res', res)
