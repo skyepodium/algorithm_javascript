@@ -1,32 +1,18 @@
-const maxProduct = (words: string[]): number => {
+const hasAllCodes = (s: string, k: number): boolean => {
     // 1. init
-    const n:number = words.length
-    const w:number[] = words.map(x => {
-        let bit:number = 0
-        x.split("").forEach(a => {
-            const val:number = a.charCodeAt(0) - 'a'.charCodeAt(0)
-            bit |= 1 << val
-        })
-        return bit
-    })
-    let res:number = 0
+    const seen = new Set<string>()
+    const n:number = s.length
+    let cnt:number = 1 << k
 
     // 2. loop
-    for(let i=0; i<n; i++) {
-        for(let j=i+1; j<n; j++) {
-            const a:number = w[i]
-            const b:number = w[j]
-            if((a & b) !== 0) continue
-
-            res = Math.max(res, words[i].length * words[j].length)
+    for(let i=0; i<n-k+1; i++) {
+        const cur:string = s.substring(i, i+k)
+        if(!seen.has(cur)) {
+            cnt--
+            seen.add(cur)
         }
+        if(cnt === 0) return true
     }
 
-    return res
+    return false
 };
-
-const words:string[] = ["abcw","baz","foo","bar","xtfn","abcdef"]
-
-const res = maxProduct(words)
-
-console.log('res', res)
