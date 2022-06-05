@@ -1,18 +1,34 @@
-const hasAllCodes = (s, k) => {
+const longestNiceSubstring = (s) => {
     // 1. init
-    const seen = new Set()
     const n = s.length
-    let cnt = 1 << k
+    let res = ""
 
     // 2. loop
-    for(let i=0; i<n-k+1; i++) {
-        const cur = s.substring(i, i+k)
-        if(!seen.has(cur)) {
-            cnt--
-            seen.add(cur)
+    for(let i=0; i<n; i++) {
+        for(let j=i+1; j<n+1; j++) {
+            // set
+            const cur = s.substring(i, j)
+            const se = new Set(cur)
+            let isNice = true
+            for(const c of se.keys()) {
+                if((c.charCodeAt(0) < "a".charCodeAt(0) && !se.has(c.toLowerCase()))
+                || (c.charCodeAt(0) >= "a".charCodeAt(0) && !se.has(c.toUpperCase()))) {
+                    isNice = false
+                    break
+                }
+            }
+
+            if(isNice && res.length < cur.length) res = cur
         }
-        if(cnt === 0) return true
     }
 
-    return false
+    return res
 };
+
+s = "YazaAay"
+// s = "Bb"
+// s = "c"
+
+const res = longestNiceSubstring(s)
+
+console.log('res', res)
