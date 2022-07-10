@@ -1,34 +1,31 @@
-const longestNiceSubstring = (s) => {
+const minCostClimbingStairs = (cost) => {
     // 1. init
-    const n = s.length
-    let res = ""
+    const n = cost.length
+    cost = cost.concat([0])
+    const MAX_VAL = 10000001
+    const d = Array.from(new Array(n+1)).fill(MAX_VAL)
 
-    // 2. loop
-    for(let i=0; i<n; i++) {
-        for(let j=i+1; j<n+1; j++) {
-            // set
-            const cur = s.substring(i, j)
-            const se = new Set(cur)
-            let isNice = true
-            for(const c of se.keys()) {
-                if((c.charCodeAt(0) < "a".charCodeAt(0) && !se.has(c.toLowerCase()))
-                || (c.charCodeAt(0) >= "a".charCodeAt(0) && !se.has(c.toUpperCase()))) {
-                    isNice = false
-                    break
-                }
-            }
+    // 2. top down
+    d[0] = cost[0]
+    d[1] = cost[1]
 
-            if(isNice && res.length < cur.length) res = cur
-        }
+    const go = (i) => {
+        if(d[i] < MAX_VAL) return d[i]
+
+        if(i - 1 >= 0)
+            d[i] = Math.min(d[i], go(i-1) + cost[i])
+        if(i - 2 >= 0)
+            d[i] = Math.min(d[i], go(i-2) + cost[i])
+
+        return d[i]
     }
 
-    return res
+    return go(n)
 };
 
-s = "YazaAay"
-// s = "Bb"
-// s = "c"
+cost = [10,15,20]
+cost = [1,100,1,1,1,100,1,1,100,1]
 
-const res = longestNiceSubstring(s)
+const res = minCostClimbingStairs(cost)
 
 console.log('res', res)
