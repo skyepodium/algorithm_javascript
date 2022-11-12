@@ -1,27 +1,29 @@
-const minCostClimbingStairs = (cost) => {
-    // 1. init
-    const n = cost.length
-    cost = cost.concat([0])
-    const MAX_VAL = 10000001
-    const d = Array.from(new Array(n+1)).fill(MAX_VAL)
-
-    // 2. bottom up
-    d[0] = cost[0]
-    d[1] = cost[1]
-
-    for(let i=0; i<n; i++) {
-        if(i + 1 <= n)
-            d[i+1] = Math.min(d[i+1], d[i] + cost[i+1])
-        if(i + 2 <= n)
-            d[i+2] = Math.min(d[i+2], d[i] + cost[i+2])
+const isStrictlyPalindromic = n => {
+    // 1. base convertor
+    const baseConvertor = (n, base) => {
+        let res = ""
+        while (n > 0) {
+            res = (n % base) + res
+            n = Math.floor(n / base)
+        }
+        return res
     }
 
-    return d[n]
+    // 2. loop
+    for(let i=2; i<=n-2; i++) {
+        const baseStr = baseConvertor(n, i)
+
+        // two pointer
+        let l = 0
+        let r = baseStr.length - 1
+        while(l < r) {
+            if (baseStr[l] !== baseStr[r]) {
+                return false
+            }
+            l++
+            r--
+        }
+    }
+
+    return true
 };
-
-cost = [10,15,20]
-cost = [1,100,1,1,1,100,1,1,100,1]
-
-const res = minCostClimbingStairs(cost)
-
-console.log('res', res)
